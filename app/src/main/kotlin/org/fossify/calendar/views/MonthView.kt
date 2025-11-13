@@ -28,6 +28,7 @@ import kotlin.math.min
 class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(context, attrs, defStyle) {
     companion object {
         private const val BG_CORNER_RADIUS = 8f
+        private const val LEFT_BORDER_WIDTH = 4f
         private const val EVENT_DOT_COLUMN_COUNT = 3
         private const val EVENT_DOT_ROW_COUNT = 1
     }
@@ -364,6 +365,11 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
         bgRectF.set(bgLeft, bgTop, bgRight, bgBottom)
         canvas.drawRoundRect(bgRectF, BG_CORNER_RADIUS, BG_CORNER_RADIUS, getEventBackgroundColor(event))
 
+        // Draw left border with event color
+        val borderWidth = LEFT_BORDER_WIDTH * resources.displayMetrics.density
+        val borderRectF = RectF(bgLeft, bgTop, bgLeft + borderWidth, bgBottom)
+        canvas.drawRoundRect(borderRectF, BG_CORNER_RADIUS, BG_CORNER_RADIUS, getEventBorderColor(event))
+
         val specificEventTitlePaint = getEventTitlePaint(event)
         var taskIconWidth = 0
         if (event.isTask) {
@@ -407,6 +413,21 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
     }
 
     private fun getEventBackgroundColor(event: MonthViewEvent): Paint {
+        // Use semi-transparent white background instead of event color
+        val shouldDim = when {
+            event.isTask -> dimCompletedTasks && event.isTaskCompleted
+            else -> dimPastEvents && event.isPastEvent && !isPrintVersion
+        }
+
+        // 20% opacity for normal events, 15% for dimmed events
+        val alpha = if (shouldDim) 38 else 51  // 38 = 15% of 255, 51 = 20% of 255
+        val paintColor = Color.argb(alpha, 255, 255, 255)
+
+        return getColoredPaint(paintColor)
+    }
+
+    private fun getEventBorderColor(event: MonthViewEvent): Paint {
+        // Use the event's color for the left border
         var paintColor = event.color
 
         val adjustAlpha = when {
@@ -422,7 +443,8 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
     }
 
     private fun getEventTitlePaint(event: MonthViewEvent): Paint {
-        var paintColor = event.color.getContrastColor()
+        // Use calendar's text color instead of event color's contrast
+        var paintColor = textColor
         val adjustAlpha = when {
             event.isTask -> dimCompletedTasks && event.isTaskCompleted
             else -> dimPastEvents && event.isPastEvent && !isPrintVersion
