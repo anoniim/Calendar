@@ -3,14 +3,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <org.fossify.commons.views.MyTextView
-        android:id="@+id/about_message"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:padding="@dimen/activity_margin"
-        android:text="S láskou pro mojí maminku Šárinku ♥️"
-        android:textSize="24sp"
-        android:gravity="center" />
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="@dimen/activity_margin">
+
+        <org.fossify.commons.views.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="S láskou"
+            android:textSize="32sp"
+            android:gravity="center" />
+
+        <org.fossify.commons.views.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="pro moji milovanou"
+            android:textSize="32sp"
+            android:gravity="center" />
+
+        <org.fossify.commons.views.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="maminku Šárinku"
+            android:textSize="32sp"
+            android:gravity="center" />
+
+        <org.fossify.commons.views.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="♥️"
+            android:textSize="80sp"
+            android:gravity="center" />
+
+    </LinearLayout>
 
 </RelativeLayout>
