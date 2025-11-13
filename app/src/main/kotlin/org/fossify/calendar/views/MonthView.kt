@@ -417,10 +417,10 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
         return minOf(layout.lineCount, 2)
     }
 
-    private fun drawEventTitle(event: MonthViewEvent, canvas: Canvas, x: Float, y: Float, availableWidth: Float, paint: Paint) {
+    private fun drawEventTitle(event: MonthViewEvent, canvas: Canvas, x: Float, y: Float, availableWidth: Float, paint: TextPaint) {
         if (availableWidth <= 0) return
 
-        val layout = StaticLayout.Builder.obtain(event.title, 0, event.title.length, paint as TextPaint, availableWidth.toInt())
+        val layout = StaticLayout.Builder.obtain(event.title, 0, event.title.length, paint, availableWidth.toInt())
             .setAlignment(Layout.Alignment.ALIGN_NORMAL)
             .setLineSpacing(0f, 1f)
             .setIncludePad(false)
@@ -484,7 +484,7 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
         return getColoredPaint(paintColor)
     }
 
-    private fun getEventTitlePaint(event: MonthViewEvent): Paint {
+    private fun getEventTitlePaint(event: MonthViewEvent): TextPaint {
         // Use calendar's text color instead of event color's contrast
         var paintColor = textColor
         val adjustAlpha = when {
@@ -496,7 +496,7 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
             paintColor = paintColor.adjustAlpha(HIGHER_ALPHA)
         }
 
-        val curPaint = Paint(eventTitlePaint)
+        val curPaint = TextPaint(eventTitlePaint)
         curPaint.color = paintColor
         curPaint.isStrikeThruText = event.shouldStrikeThrough()
         return curPaint
