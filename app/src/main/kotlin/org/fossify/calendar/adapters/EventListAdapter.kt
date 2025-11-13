@@ -154,6 +154,9 @@ class EventListAdapter(
             eventItemDescription.beVisibleIf(displayDescription && eventItemDescription.text.isNotEmpty())
             eventItemColorBar.background.applyColorFilter(listEvent.color)
 
+            eventItemEmoji.text = listEvent.emoji
+            eventItemEmoji.beVisibleIf(listEvent.emoji.isNotEmpty())
+
             var newTextColor = textColor
             if (listEvent.isAllDay || listEvent.startTS <= now && listEvent.endTS <= now) {
                 if (listEvent.isAllDay && Formatter.getDayCodeFromTS(listEvent.startTS) == Formatter.getDayCodeFromTS(now) && !isPrintVersion) {

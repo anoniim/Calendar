@@ -45,6 +45,20 @@
             app:layout_constraintTop_toTopOf="@+id/event_item_title" />
 
         <TextView
+            android:id="@+id/event_item_emoji"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/small_margin"
+            android:paddingEnd="@dimen/activity_margin"
+            android:paddingBottom="@dimen/tiny_margin"
+            android:textSize="20sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="🎉"
+            tools:visibility="visible" />
+
+        <TextView
             android:id="@+id/event_item_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -52,10 +66,10 @@
             android:includeFontPadding="false"
             android:maxLines="1"
             android:paddingTop="@dimen/small_margin"
-            android:paddingEnd="@dimen/activity_margin"
+            android:paddingEnd="@dimen/tiny_margin"
             android:paddingBottom="@dimen/tiny_margin"
             android:textSize="@dimen/day_text_size"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/event_item_emoji"
             app:layout_constraintStart_toEndOf="@+id/event_item_task_image"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Event title" />
