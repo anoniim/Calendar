@@ -364,14 +364,14 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
             taskIconWidth = eventTitleHeight + smallPadding
         }
         val titleAvailableWidth = bgRight - bgLeft - leftPadding - smallPadding - taskIconWidth
-        val titleLineCount = calculateTitleLineCount(event.title, titleAvailableWidth - smallPadding * 2)
+        val (titleLineCount, actualTextHeight) = calculateTitleHeight(event.title, titleAvailableWidth - smallPadding * 2)
 
-        // event background rectangle - adjust height based on line count
+        // event background rectangle - adjust height based on actual text height
         val backgroundY = yPos + verticalOffset
-        val eventHeight = eventTitleHeight * titleLineCount
-        // Position box to align with text (text top is at backgroundY - eventTitleHeight)
+        val eventHeight = actualTextHeight
+        // Position border to align with text (text top is at backgroundY - eventTitleHeight)
         val bgTop = backgroundY - eventTitleHeight - smallPadding
-        val bgBottom = backgroundY + (eventHeight - eventTitleHeight) + smallPadding
+        val bgBottom = backgroundY - eventTitleHeight + actualTextHeight + smallPadding
 
         // Handle event wrapping to next week
         if (bgRight >= canvas.width.toFloat() - smallPadding && event.daysCnt > 1) {
@@ -402,8 +402,8 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
         }
     }
 
-    private fun calculateTitleLineCount(title: String, availableWidth: Float): Int {
-        if (availableWidth <= 0) return 1
+    private fun calculateTitleHeight(title: String, availableWidth: Float): Pair<Int, Int> {
+        if (availableWidth <= 0) return Pair(1, eventTitleHeight)
 
         val layout = StaticLayout.Builder.obtain(title, 0, title.length, eventTitlePaint, availableWidth.toInt())
             .setAlignment(Layout.Alignment.ALIGN_NORMAL)
@@ -412,7 +412,9 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
             .setMaxLines(2)
             .build()
 
-        return minOf(layout.lineCount, 2)
+        val lineCount = minOf(layout.lineCount, 2)
+        val actualHeight = layout.height
+        return Pair(lineCount, actualHeight)
     }
 
     private fun drawEventTitle(event: MonthViewEvent, canvas: Canvas, x: Float, y: Float, availableWidth: Float, paint: TextPaint, lineCount: Int) {
