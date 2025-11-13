@@ -383,10 +383,7 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
             }
         }
 
-        bgRectF.set(bgLeft, bgTop, bgRight, bgBottom)
-        canvas.drawRoundRect(bgRectF, BG_CORNER_RADIUS, BG_CORNER_RADIUS, getEventBackgroundColor(event))
-
-        // Draw left border with event color
+        // Draw only left border with event color (no background)
         val borderRectF = RectF(bgLeft, bgTop, bgLeft + borderWidth, bgBottom)
         canvas.drawRoundRect(borderRectF, BG_CORNER_RADIUS, BG_CORNER_RADIUS, getEventBorderColor(event))
 
