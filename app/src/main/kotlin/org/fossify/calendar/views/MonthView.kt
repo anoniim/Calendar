@@ -410,6 +410,7 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
             .setLineSpacing(0f, 1f)
             .setIncludePad(false)
             .setMaxLines(2)
+            .setEllipsize(TextUtils.TruncateAt.END)
             .build()
 
         val lineCount = minOf(layout.lineCount, 2)
