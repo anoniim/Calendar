@@ -86,7 +86,6 @@ import org.fossify.calendar.models.ListItem
 import org.fossify.calendar.models.ListSectionDay
 import org.fossify.commons.dialogs.RadioGroupDialog
 import org.fossify.commons.extensions.adjustAlpha
-import org.fossify.commons.extensions.appLaunched
 import org.fossify.commons.extensions.applyColorFilter
 import org.fossify.commons.extensions.areDigitsOnly
 import org.fossify.commons.extensions.beGone
@@ -173,7 +172,7 @@ class MainActivity : SimpleActivity(), RefreshRecyclerViewListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        appLaunched(org.fossify.calendar.BuildConfig.APPLICATION_ID)
+        // Support dialog removed - appLaunched(org.fossify.calendar.BuildConfig.APPLICATION_ID)
         setupOptionsMenu()
         refreshMenuItems()
         setupEdgeToEdge(
