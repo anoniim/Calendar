@@ -295,12 +295,12 @@ class MainActivity : SimpleActivity(), RefreshRecyclerViewListener {
         shouldGoToTodayBeVisible = currentFragments.lastOrNull()?.shouldGoToTodayBeVisible() ?: false
         binding.mainMenu.requireToolbar().menu.apply {
             goToTodayButton = findItem(R.id.go_to_today)
-            findItem(R.id.print).isVisible = config.storedView != MONTHLY_DAILY_VIEW
+            findItem(R.id.print).isVisible = false
             findItem(R.id.filter).isVisible = mShouldFilterBeVisible
             findItem(R.id.go_to_today).isVisible = shouldGoToTodayBeVisible && !binding.mainMenu.isSearchOpen
             findItem(R.id.go_to_date).isVisible = config.storedView != EVENTS_LIST_VIEW
             findItem(R.id.refresh_caldav_calendars).isVisible = config.caldavSync
-            findItem(R.id.more_apps_from_us).isVisible = !resources.getBoolean(org.fossify.commons.R.bool.hide_google_relations)
+            findItem(R.id.more_apps_from_us).isVisible = false
         }
     }
 
