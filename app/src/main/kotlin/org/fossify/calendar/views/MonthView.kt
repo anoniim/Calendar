@@ -312,7 +312,7 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
     private fun addWeekNumbers(canvas: Canvas) {
         val linePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             style = Paint.Style.FILL
-            strokeWidth = resources.displayMetrics.density * 3 // 3dp width
+            strokeWidth = resources.displayMetrics.density * 6 // 6dp width
         }
 
         for (i in 0 until ROW_COUNT) {

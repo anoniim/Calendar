@@ -1032,8 +1032,8 @@ fun Context.setExactAlarm(
  */
 fun Context.getWeekNumberWidth(): Int {
     return if (config.showWeekNumbers) {
-        // Only need space for thin vertical line (2dp position + 3dp width + 2dp padding = 7dp)
-        (resources.displayMetrics.density * 7).toInt()
+        // Space for vertical line (2dp position + 6dp width + 2dp padding = 10dp)
+        (resources.displayMetrics.density * 10).toInt()
     } else {
         0
     }
