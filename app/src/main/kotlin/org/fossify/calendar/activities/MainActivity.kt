@@ -1176,26 +1176,8 @@ class MainActivity : SimpleActivity(), RefreshRecyclerViewListener {
     }
 
     private fun launchAbout() {
-        val licenses = LICENSE_JODA
-
-        val faqItems = arrayListOf(
-            FAQItem("${getString(R.string.faq_2_title)} ${getString(R.string.faq_2_title_extra)}", R.string.faq_2_text),
-            FAQItem(R.string.faq_5_title, R.string.faq_5_text),
-            FAQItem(R.string.faq_3_title, R.string.faq_3_text),
-            FAQItem(R.string.faq_6_title, R.string.faq_6_text),
-            FAQItem(R.string.faq_1_title, R.string.faq_1_text),
-            FAQItem(org.fossify.commons.R.string.faq_1_title_commons, org.fossify.commons.R.string.faq_1_text_commons),
-            FAQItem(org.fossify.commons.R.string.faq_4_title_commons, org.fossify.commons.R.string.faq_4_text_commons),
-            FAQItem(R.string.faq_4_title, R.string.faq_4_text)
-        )
-
-        if (!resources.getBoolean(org.fossify.commons.R.bool.hide_google_relations)) {
-            faqItems.add(FAQItem(org.fossify.commons.R.string.faq_2_title_commons, org.fossify.commons.R.string.faq_2_text_commons))
-            faqItems.add(FAQItem(org.fossify.commons.R.string.faq_6_title_commons, org.fossify.commons.R.string.faq_6_text_commons))
-            faqItems.add(FAQItem(org.fossify.commons.R.string.faq_7_title_commons, org.fossify.commons.R.string.faq_7_text_commons))
-        }
-
-        startAboutActivity(R.string.app_name, licenses, org.fossify.calendar.BuildConfig.VERSION_NAME, faqItems, true)
+        hideKeyboard()
+        startActivity(Intent(applicationContext, AboutActivity::class.java))
     }
 
     private fun searchQueryChanged(text: String) {
