@@ -310,19 +310,28 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
     }
 
     private fun addWeekNumbers(canvas: Canvas) {
-        val weekNumberPaint = Paint(textPaint)
+        val linePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.FILL
+            strokeWidth = resources.displayMetrics.density * 3 // 3dp width
+        }
 
         for (i in 0 until ROW_COUNT) {
-            val weekDays = days.subList(i * 7, i * 7 + 7)
-            weekNumberPaint.color = if (weekDays.any { it.isToday && !isPrintVersion }) primaryColor else textColor
-
             // fourth day of the week determines the week of the year number
             val weekOfYear = days.getOrNull(i * 7 + 3)?.weekOfYear ?: 1
-            val id = "$weekOfYear:"
-            val horizontalMarginFactor = 0.5f
-            val xPos = horizontalOffset * horizontalMarginFactor
-            val yPos = i * dayHeight + weekDaysLetterHeight
-            canvas.drawText(id, xPos, yPos + textPaint.textSize, weekNumberPaint)
+
+            // Use yellow for odd weeks, grey for even weeks
+            linePaint.color = if (weekOfYear % 2 == 1) {
+                Color.parseColor("#FFC107") // Amber/Yellow
+            } else {
+                Color.parseColor("#757575") // Grey
+            }
+
+            // Draw vertical line at left edge for this week row
+            val lineX = 2f * resources.displayMetrics.density // 2dp from left edge
+            val lineTop = i * dayHeight + weekDaysLetterHeight
+            val lineBottom = (i + 1) * dayHeight + weekDaysLetterHeight
+
+            canvas.drawLine(lineX, lineTop, lineX, lineBottom, linePaint)
         }
     }
 
