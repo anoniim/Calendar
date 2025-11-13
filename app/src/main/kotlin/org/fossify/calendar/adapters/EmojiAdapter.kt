@@ -40,7 +40,19 @@ class EmojiAdapter(
     inner class EmojiViewHolder(val binding: EmojiButtonBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindView(emoji: String, selected: Boolean, showDivider: Boolean) {
             binding.emojiButton.apply {
+                // Handle empty emojis (padding spacers)
+                if (emoji.isEmpty()) {
+                    text = ""
+                    isClickable = false
+                    setBackgroundColor(Color.TRANSPARENT)
+                    updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                        topMargin = 0
+                    }
+                    return
+                }
+
                 text = emoji
+                isClickable = true
                 setOnClickListener {
                     updateSelection(emoji)
                 }

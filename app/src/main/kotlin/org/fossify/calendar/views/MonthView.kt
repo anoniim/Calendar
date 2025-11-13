@@ -181,6 +181,11 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
             drawGrid(canvas)
         }
 
+        // Always draw week separator lines
+        if (!isMonthDayView) {
+            drawWeekSeparators(canvas)
+        }
+
         addWeekDayLetters(canvas)
         if (showWeekNumbers && days.isNotEmpty()) {
             addWeekNumbers(canvas)
@@ -306,6 +311,19 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
             canvas.drawLine(0f, i * dayHeight + weekDaysLetterHeight, canvas.width.toFloat(), i * dayHeight + weekDaysLetterHeight, gridPaint)
         }
         canvas.drawLine(0f, canvas.height.toFloat(), canvas.width.toFloat(), canvas.height.toFloat(), gridPaint)
+    }
+
+    private fun drawWeekSeparators(canvas: Canvas) {
+        val separatorPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            color = textColor.adjustAlpha(0.15f)
+            strokeWidth = resources.displayMetrics.density // 1dp width
+        }
+
+        // Draw horizontal lines between weeks (not at top or bottom)
+        for (i in 1 until ROW_COUNT) {
+            val lineY = i * dayHeight + weekDaysLetterHeight
+            canvas.drawLine(0f, lineY, canvas.width.toFloat(), lineY, separatorPaint)
+        }
     }
 
     private fun addWeekDayLetters(canvas: Canvas) {

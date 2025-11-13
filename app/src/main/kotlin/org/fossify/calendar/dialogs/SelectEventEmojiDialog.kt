@@ -174,7 +174,11 @@ class SelectEventEmojiDialog(val activity: Activity, var currentEmoji: String, v
 
         // Combine recently used emojis with all emojis
         val emojis = if (recentlyUsedEmojis.isNotEmpty()) {
-            recentlyUsedEmojis.toTypedArray() + allEmojis
+            // Add padding to ensure full list starts on a new line
+            val columnsPerRow = 8
+            val paddingCount = (columnsPerRow - (recentlyUsedEmojis.size % columnsPerRow)) % columnsPerRow
+            val padding = Array(paddingCount) { "" }
+            recentlyUsedEmojis.toTypedArray() + padding + allEmojis
         } else {
             allEmojis
         }
