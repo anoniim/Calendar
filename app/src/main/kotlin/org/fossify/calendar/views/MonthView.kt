@@ -372,15 +372,16 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
 
         val specificEventTitlePaint = getEventTitlePaint(event)
         var taskIconWidth = 0
+        val leftPadding = borderWidth + smallPadding
         if (event.isTask) {
             val taskIcon = resources.getColoredDrawableWithColor(R.drawable.ic_task_vector, specificEventTitlePaint.color).mutate()
             val taskIconY = yPos.toInt() + verticalOffset - eventTitleHeight + smallPadding * 2
-            taskIcon.setBounds(xPos.toInt() + smallPadding * 2, taskIconY, xPos.toInt() + eventTitleHeight + smallPadding * 2, taskIconY + eventTitleHeight)
+            taskIcon.setBounds(xPos.toInt() + leftPadding.toInt() + smallPadding, taskIconY, xPos.toInt() + leftPadding.toInt() + eventTitleHeight + smallPadding, taskIconY + eventTitleHeight)
             taskIcon.draw(canvas)
             taskIconWidth += eventTitleHeight + smallPadding
         }
 
-        drawEventTitle(event, canvas, xPos + taskIconWidth, yPos + verticalOffset, bgRight - bgLeft - smallPadding - taskIconWidth, specificEventTitlePaint)
+        drawEventTitle(event, canvas, xPos + leftPadding + taskIconWidth, yPos + verticalOffset, bgRight - bgLeft - leftPadding - smallPadding - taskIconWidth, specificEventTitlePaint)
 
         for (i in 0 until min(event.daysCnt, 7 - event.startDayIndex % 7)) {
             dayVerticalOffsets.put(event.startDayIndex + i, verticalOffset + eventTitleHeight + smallPadding * 2)
