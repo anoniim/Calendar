@@ -1316,12 +1316,12 @@ class EventActivity : SimpleActivity() {
         binding.eventAttendeesImage.beVisibleIf(isSyncedEvent)
         binding.eventAttendeesHolder.beVisibleIf(isSyncedEvent)
         binding.eventAttendeesDivider.beVisibleIf(isSyncedEvent)
-        binding.eventAvailabilityDivider.beVisibleIf(isSyncedEvent)
-        binding.eventAvailabilityImage.beVisibleIf(isSyncedEvent)
-        binding.eventAvailability.beVisibleIf(isSyncedEvent)
-        binding.eventAccessLevelImage.beVisibleIf(isSyncedEvent)
-        binding.eventAccessLevelDivider.beVisibleIf(isSyncedEvent)
-        binding.eventAccessLevel.beVisibleIf(isSyncedEvent)
+        binding.eventAvailabilityDivider.beGone()
+        binding.eventAvailabilityImage.beGone()
+        binding.eventAvailability.beGone()
+        binding.eventAccessLevelImage.beGone()
+        binding.eventAccessLevelDivider.beGone()
+        binding.eventAccessLevel.beGone()
     }
 
     private fun updateReminderTypeImage(view: ImageView, reminder: Reminder) {
@@ -1440,8 +1440,8 @@ class EventActivity : SimpleActivity() {
         calendars.firstOrNull { it.id == calendarId }
 
     private fun updateCurrentCalendarInfo(currentCalendar: CalDAVCalendar?) = binding.apply {
-        eventTypeImage.beVisibleIf(currentCalendar == null)
-        eventTypeHolder.beVisibleIf(currentCalendar == null)
+        eventTypeImage.beGone()
+        eventTypeHolder.beGone()
         eventCaldavCalendarDivider.beVisibleIf(currentCalendar == null)
         eventCaldavCalendarEmail.beGoneIf(currentCalendar == null)
 
