@@ -266,6 +266,18 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
 
                     canvas.drawText(dayNumber, xPosCenter, textY, textPaint)
                     dayVerticalOffsets.put(day.indexOnMonthView, (verticalOffset + textPaint.textSize * 2).toInt())
+
+                    // Draw emoji at the bottom of the day cell if any event has one
+                    val emojiToDraw = getEmojiForDay(day)
+                    if (emojiToDraw.isNotEmpty()) {
+                        val emojiSize = textPaint.textSize * 1.2f
+                        val emojiPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                            textSize = emojiSize
+                            textAlign = Paint.Align.CENTER
+                        }
+                        val emojiY = yPos + dayHeight - emojiSize * 0.5f
+                        canvas.drawText(emojiToDraw, xPosCenter, emojiY, emojiPaint)
+                    }
                 }
                 curId++
             }
@@ -577,5 +589,21 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
     fun updateCurrentlySelectedDay(x: Int, y: Int) {
         selectedDayCoords = Point(x, y)
         invalidate()
+    }
+
+    private fun getEmojiForDay(day: DayMonthly): String {
+        if (day.dayEvents.isEmpty()) return ""
+
+        // Separate events with time from all-day events, filter for non-empty emojis
+        val timedEvents = day.dayEvents.filter { !it.getIsAllDay() && it.emoji.isNotEmpty() }
+        val allDayEvents = day.dayEvents.filter { it.getIsAllDay() && it.emoji.isNotEmpty() }
+
+        // Priority 1: Events with start time, later first
+        val timedEmoji = timedEvents.maxByOrNull { it.startTS }?.emoji
+        if (!timedEmoji.isNullOrEmpty()) return timedEmoji
+
+        // Priority 2: Full day events, starting later first
+        val allDayEmoji = allDayEvents.maxByOrNull { it.startTS }?.emoji
+        return allDayEmoji ?: ""
     }
 }
