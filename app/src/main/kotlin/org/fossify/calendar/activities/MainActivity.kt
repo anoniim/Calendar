@@ -183,33 +183,7 @@ class MainActivity : SimpleActivity(), RefreshRecyclerViewListener {
         checkWhatsNewDialog()
         binding.calendarFab.beVisibleIf(config.storedView != YEARLY_VIEW && config.storedView != WEEKLY_VIEW)
         binding.calendarFab.setOnClickListener {
-            if (config.allowCreatingTasks) {
-                if (binding.fabExtendedOverlay.isVisible()) {
-                    openNewEvent()
-
-                    Handler().postDelayed({
-                        hideExtendedFab()
-                    }, 300)
-                } else {
-                    showExtendedFab()
-                }
-            } else {
-                openNewEvent()
-            }
-        }
-        binding.fabEventLabel.setOnClickListener { openNewEvent() }
-        binding.fabTaskLabel.setOnClickListener { openNewTask() }
-
-        binding.fabExtendedOverlay.setOnClickListener {
-            hideExtendedFab()
-        }
-
-        binding.fabTaskIcon.setOnClickListener {
-            openNewTask()
-
-            Handler().postDelayed({
-                hideExtendedFab()
-            }, 300)
+            openNewEvent()
         }
 
         storeStateVariables()
