@@ -179,11 +179,17 @@ class SelectEventEmojiDialog(val activity: Activity, var currentEmoji: String, v
             allEmojis
         }
 
-        val emojiAdapter = EmojiAdapter(activity, emojis, currentEmoji) { emoji ->
-            activity.config.addRecentlyUsedEmoji(emoji)
-            callback(emoji)
-            dialog?.dismiss()
-        }
+        val emojiAdapter = EmojiAdapter(
+            activity = activity,
+            emojis = emojis,
+            currentEmoji = currentEmoji,
+            callback = { emoji ->
+                activity.config.addRecentlyUsedEmoji(emoji)
+                callback(emoji)
+                dialog?.dismiss()
+            },
+            recentlyUsedCount = recentlyUsedEmojis.size
+        )
 
         binding.emojiGrid.apply {
             layoutManager = GridLayoutManager(activity, 8)
