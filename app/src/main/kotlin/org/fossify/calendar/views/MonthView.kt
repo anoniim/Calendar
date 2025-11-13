@@ -369,8 +369,9 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
         // event background rectangle - adjust height based on line count
         val backgroundY = yPos + verticalOffset
         val eventHeight = eventTitleHeight * titleLineCount
-        val bgTop = backgroundY + smallPadding - eventHeight
-        val bgBottom = backgroundY + smallPadding * 2
+        // Position box to align with text (text top is at backgroundY - eventTitleHeight)
+        val bgTop = backgroundY - eventTitleHeight - smallPadding
+        val bgBottom = backgroundY + (eventHeight - eventTitleHeight) + smallPadding
 
         // Handle event wrapping to next week
         if (bgRight >= canvas.width.toFloat() - smallPadding && event.daysCnt > 1) {
@@ -392,7 +393,7 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
         val specificEventTitlePaint = getEventTitlePaint(event)
         if (event.isTask) {
             val taskIcon = resources.getColoredDrawableWithColor(R.drawable.ic_task_vector, specificEventTitlePaint.color).mutate()
-            val taskIconY = yPos.toInt() + verticalOffset - eventHeight + smallPadding * 2
+            val taskIconY = yPos.toInt() + verticalOffset - eventTitleHeight
             taskIcon.setBounds(xPos.toInt() + leftPadding.toInt() + smallPadding, taskIconY, xPos.toInt() + leftPadding.toInt() + eventTitleHeight + smallPadding, taskIconY + eventTitleHeight)
             taskIcon.draw(canvas)
         }
@@ -428,10 +429,9 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
             .setEllipsize(TextUtils.TruncateAt.END)
             .build()
 
-        // Position text at the top of the event box with proper padding
-        val eventHeight = eventTitleHeight * lineCount
+        // Keep original text position (was correct all along)
         canvas.save()
-        canvas.translate(x + smallPadding * 2, y + smallPadding * 2 - eventHeight)
+        canvas.translate(x + smallPadding * 2, y - eventTitleHeight)
         layout.draw(canvas)
         canvas.restore()
     }
