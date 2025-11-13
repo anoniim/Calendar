@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_marginEnd="@dimen/activity_margin"
-                android:layout_marginBottom="@dimen/activity_margin"
+                android:layout_marginBottom="@dimen/fab_bottom_margin"
                 android:contentDescription="@string/new_event"
                 android:src="@drawable/ic_plus_vector"
                 app:backgroundTint="@color/color_primary"
