@@ -1028,14 +1028,12 @@ fun Context.setExactAlarm(
 }
 
 /**
- * Returns the width of the week number text.
+ * Returns the width needed for week indicators (vertical lines).
  */
 fun Context.getWeekNumberWidth(): Int {
     return if (config.showWeekNumbers) {
-        val factor = 2.5f
-        (resources.getDimensionPixelSize(
-            org.fossify.commons.R.dimen.smaller_text_size
-        ) * factor).roundToInt()
+        // Space for vertical line (2dp position + 6dp width + 2dp padding = 10dp)
+        (resources.displayMetrics.density * 10).toInt()
     } else {
         0
     }
