@@ -503,10 +503,64 @@
                 android:importantForAccessibility="no" />
 
             <ImageView
-                android:id="@+id/event_attendees_image"
+                android:id="@+id/event_emoji_image"
                 android:layout_width="@dimen/smaller_icon_size"
                 android:layout_height="@dimen/smaller_icon_size"
                 android:layout_below="@+id/event_color_divider"
+                android:layout_alignTop="@+id/event_emoji_holder"
+                android:layout_alignBottom="@+id/event_emoji_holder"
+                android:layout_marginStart="@dimen/normal_margin"
+                android:padding="@dimen/medium_margin"
+                android:src="@drawable/ic_emoji_outline_vector" />
+
+            <RelativeLayout
+                android:id="@+id/event_emoji_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/event_color_divider"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:layout_marginBottom="@dimen/medium_margin"
+                android:layout_toEndOf="@+id/event_emoji_image"
+                android:background="?attr/selectableItemBackground">
+
+                <org.fossify.commons.views.MyTextView
+                    android:id="@+id/event_emoji_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/small_margin"
+                    android:layout_marginEnd="@dimen/medium_margin"
+                    android:layout_toStartOf="@+id/event_emoji"
+                    android:paddingTop="@dimen/normal_margin"
+                    android:paddingBottom="@dimen/normal_margin"
+                    android:text="@string/event_emoji"
+                    android:textSize="@dimen/day_text_size" />
+
+                <org.fossify.commons.views.MyTextView
+                    android:id="@+id/event_emoji"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/activity_margin"
+                    android:textSize="24sp"
+                    android:clickable="false" />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/event_emoji_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:layout_below="@+id/event_emoji_holder"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:background="@color/divider_grey"
+                android:importantForAccessibility="no" />
+
+            <ImageView
+                android:id="@+id/event_attendees_image"
+                android:layout_width="@dimen/smaller_icon_size"
+                android:layout_height="@dimen/smaller_icon_size"
+                android:layout_below="@+id/event_emoji_divider"
                 android:layout_alignTop="@+id/event_attendees_holder"
                 android:layout_marginStart="@dimen/normal_margin"
                 android:layout_marginTop="@dimen/small_margin"
@@ -517,7 +571,7 @@
                 android:id="@+id/event_attendees_holder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/event_color_divider"
+                android:layout_below="@+id/event_emoji_divider"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:layout_toEndOf="@+id/event_attendees_image"
                 android:orientation="vertical" />

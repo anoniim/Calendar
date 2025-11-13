@@ -32,6 +32,8 @@
     <string name="public_event_notification_text">An event is upcoming</string>
     <string name="everything_filtered_out">You have filtered out all event types</string>
     <string name="event_color">Event color</string>
+    <string name="event_emoji">Event emoji</string>
+    <string name="remove_emoji">Remove emoji</string>
     <string name="default_calendar_color">Default calendar color</string>
 
     <!-- Tasks -->

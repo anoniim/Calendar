@@ -39,6 +39,7 @@ import org.fossify.calendar.dialogs.RepeatLimitTypePickerDialog
 import org.fossify.calendar.dialogs.RepeatRuleWeeklyDialog
 import org.fossify.calendar.dialogs.SelectEventCalendarDialog
 import org.fossify.calendar.dialogs.SelectEventColorDialog
+import org.fossify.calendar.dialogs.SelectEventEmojiDialog
 import org.fossify.calendar.dialogs.SelectEventTypeDialog
 import org.fossify.calendar.extensions.calDAVHelper
 import org.fossify.calendar.extensions.cancelNotification
@@ -205,6 +206,7 @@ class EventActivity : SimpleActivity() {
     private var mOriginalEndTS = 0L
     private var mIsNewEvent = true
     private var mEventColor = 0
+    private var mEventEmoji = ""
 
     private lateinit var mEventStartDateTime: DateTime
     private lateinit var mEventEndDateTime: DateTime
@@ -555,6 +557,10 @@ class EventActivity : SimpleActivity() {
             showEventColorDialog()
         }
 
+        eventEmojiHolder.setOnClickListener {
+            showEventEmojiDialog()
+        }
+
         updateTextColors(eventNestedScrollview)
         updateIconColors()
         refreshMenuItems()
@@ -732,6 +738,7 @@ class EventActivity : SimpleActivity() {
         mAccessLevel = mEvent.accessLevel
         mStatus = mEvent.status
         mEventColor = mEvent.color
+        mEventEmoji = mEvent.emoji
 
         mAttendees = mEvent.attendees.toMutableList() as ArrayList<Attendee>
         mOriginalAttendees = mAttendees.map { it.copy() }.toMutableList() as ArrayList<Attendee>
@@ -1208,6 +1215,25 @@ class EventActivity : SimpleActivity() {
         }
     }
 
+    private fun showEventEmojiDialog() {
+        hideKeyboard()
+        SelectEventEmojiDialog(
+            activity = this,
+            currentEmoji = mEventEmoji
+        ) { newEmoji ->
+            gotNewEventEmoji(newEmoji)
+        }
+    }
+
+    private fun gotNewEventEmoji(newEmoji: String) {
+        mEventEmoji = newEmoji
+        updateEventEmojiInfo()
+    }
+
+    private fun updateEventEmojiInfo() {
+        binding.eventEmoji.text = mEventEmoji
+    }
+
     private fun checkReminderTexts() {
         updateReminder1Text()
         updateReminder2Text()
@@ -1381,6 +1407,7 @@ class EventActivity : SimpleActivity() {
                 runOnUiThread {
                     binding.eventType.text = eventType.title
                     updateEventColorInfo(eventType.color)
+                    updateEventEmojiInfo()
                 }
             }
         }
@@ -1464,8 +1491,12 @@ class EventActivity : SimpleActivity() {
                     eventColorImage.beVisibleIf(eventType != null)
                     eventColorHolder.beVisibleIf(eventType != null)
                     eventColorDivider.beVisibleIf(eventType != null)
+                    eventEmojiImage.beVisibleIf(eventType != null)
+                    eventEmojiHolder.beVisibleIf(eventType != null)
+                    eventEmojiDivider.beVisibleIf(eventType != null)
                     if (eventType != null) {
                         updateEventColorInfo(eventType.color)
+                        updateEventEmojiInfo()
                     }
                 }
             }
@@ -1499,8 +1530,12 @@ class EventActivity : SimpleActivity() {
                     eventColorImage.beVisibleIf(canCustomizeColors)
                     eventColorHolder.beVisibleIf(canCustomizeColors)
                     eventColorDivider.beVisibleIf(canCustomizeColors)
+                    eventEmojiImage.beVisibleIf(canCustomizeColors)
+                    eventEmojiHolder.beVisibleIf(canCustomizeColors)
+                    eventEmojiDivider.beVisibleIf(canCustomizeColors)
                     if (canCustomizeColors) {
                         updateEventColorInfo(calendarColor)
+                        updateEventEmojiInfo()
                     }
                 }
             }
@@ -1743,6 +1778,7 @@ class EventActivity : SimpleActivity() {
             availability = mAvailability
             status = mStatus
             color = mEventColor
+            emoji = mEventEmoji
         }
 
         // recreate the event if it was moved in a different CalDAV calendar

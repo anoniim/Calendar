@@ -45,6 +45,7 @@ data class Event(
     @ColumnInfo(name = "availability") var availability: Int = 0,
     @ColumnInfo(name = "access_level") var accessLevel: Int = CalendarContract.Events.ACCESS_DEFAULT,
     @ColumnInfo(name = "color") var color: Int = 0,
+    @ColumnInfo(name = "emoji") var emoji: String = "",
     @ColumnInfo(name = "type") var type: Int = TYPE_EVENT,
     @ColumnInfo(name = "status") var status: Int = CalendarContract.Events.STATUS_CONFIRMED,
 ) : Serializable {
