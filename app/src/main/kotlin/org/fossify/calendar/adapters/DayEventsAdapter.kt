@@ -112,6 +112,9 @@ class DayEventsAdapter(activity: SimpleActivity, val events: ArrayList<Event>, r
             eventItemDescription.beVisibleIf(displayDescription && eventItemDescription.text.isNotEmpty())
             eventItemColorBar.background.applyColorFilter(event.color)
 
+            eventItemEmoji.text = event.emoji
+            eventItemEmoji.beVisibleIf(event.emoji.isNotEmpty())
+
             var newTextColor = textColor
 
             val adjustAlpha = if (event.isTask()) {
