@@ -108,6 +108,7 @@ const val LAST_USED_IGNORE_EVENT_TYPES_STATE = "last_used_ignore_event_types_sta
 const val DISPLAY_PAST_EVENTS = "display_past_events"
 const val DISPLAY_DESCRIPTION = "display_description"
 const val REPLACE_DESCRIPTION = "replace_description"
+const val RECENTLY_USED_EMOJIS = "recently_used_emojis"
 const val SHOW_GRID = "show_grid"
 const val LOOP_REMINDERS = "loop_reminders"
 const val DIM_PAST_EVENTS = "dim_past_events"

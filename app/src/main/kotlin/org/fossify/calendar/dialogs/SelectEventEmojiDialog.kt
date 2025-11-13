@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.fossify.calendar.R
 import org.fossify.calendar.adapters.EmojiAdapter
 import org.fossify.calendar.databinding.DialogSelectEmojiBinding
+import org.fossify.calendar.extensions.config
 import org.fossify.commons.extensions.getAlertDialogBuilder
 import org.fossify.commons.extensions.setupDialogStuff
 import org.fossify.commons.extensions.viewBinding
@@ -17,7 +18,9 @@ class SelectEventEmojiDialog(val activity: Activity, var currentEmoji: String, v
     private val binding by activity.viewBinding(DialogSelectEmojiBinding::inflate)
 
     init {
-        val emojis = arrayOf(
+        val recentlyUsedEmojis = activity.config.getRecentlyUsedEmojisAsList()
+
+        val allEmojis = arrayOf(
             // Smileys & Emotion
             "😀", "😃", "😄", "😁", "😆", "😅", "🤣", "😂",
             "🙂", "🙃", "😉", "😊", "😇", "🥰", "😍", "🤩",
@@ -169,7 +172,15 @@ class SelectEventEmojiDialog(val activity: Activity, var currentEmoji: String, v
             "🎌", "🏴", "🏳️", "🏳️‍🌈", "🏳️‍⚧️", "🏴‍☠️"
         )
 
+        // Combine recently used emojis with all emojis
+        val emojis = if (recentlyUsedEmojis.isNotEmpty()) {
+            recentlyUsedEmojis.toTypedArray() + allEmojis
+        } else {
+            allEmojis
+        }
+
         val emojiAdapter = EmojiAdapter(activity, emojis, currentEmoji) { emoji ->
+            activity.config.addRecentlyUsedEmoji(emoji)
             callback(emoji)
             dialog?.dismiss()
         }

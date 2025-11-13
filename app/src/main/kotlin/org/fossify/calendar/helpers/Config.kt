@@ -129,6 +129,26 @@ class Config(context: Context) : BaseConfig(context) {
         get() = prefs.getBoolean(REPLACE_DESCRIPTION, false)
         set(replaceDescription) = prefs.edit().putBoolean(REPLACE_DESCRIPTION, replaceDescription).apply()
 
+    var recentlyUsedEmojis: String
+        get() = prefs.getString(RECENTLY_USED_EMOJIS, "")!!
+        set(recentlyUsedEmojis) = prefs.edit().putString(RECENTLY_USED_EMOJIS, recentlyUsedEmojis).apply()
+
+    fun getRecentlyUsedEmojisAsList(): List<String> {
+        val emojis = recentlyUsedEmojis
+        return if (emojis.isEmpty()) emptyList() else emojis.split(",")
+    }
+
+    fun addRecentlyUsedEmoji(emoji: String) {
+        val currentEmojis = getRecentlyUsedEmojisAsList().toMutableList()
+        // Remove if already exists to move it to front
+        currentEmojis.remove(emoji)
+        // Add to beginning
+        currentEmojis.add(0, emoji)
+        // Keep only last 48 emojis (6 rows x 8 columns)
+        val limitedEmojis = currentEmojis.take(48)
+        recentlyUsedEmojis = limitedEmojis.joinToString(",")
+    }
+
     var displayDescription: Boolean
         get() = prefs.getBoolean(DISPLAY_DESCRIPTION, true)
         set(displayDescription) = prefs.edit().putBoolean(DISPLAY_DESCRIPTION, displayDescription).apply()
