@@ -2,6 +2,8 @@ package org.fossify.calendar.views
 
 import android.content.Context
 import android.graphics.*
+import android.text.Layout
+import android.text.StaticLayout
 import android.text.TextPaint
 import android.text.TextUtils
 import android.util.AttributeSet
@@ -347,13 +349,31 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
             return
         }
 
-        // event background rectangle
-        val backgroundY = yPos + verticalOffset
+        // Calculate dimensions for event box
+        val borderWidth = LEFT_BORDER_WIDTH * resources.displayMetrics.density
+        val leftPadding = borderWidth + smallPadding
         val bgLeft = xPos + smallPadding
-        val bgTop = backgroundY + smallPadding - eventTitleHeight
         var bgRight = xPos - smallPadding + dayWidth * event.daysCnt
-        val bgBottom = backgroundY + smallPadding * 2
         if (bgRight > canvas.width.toFloat()) {
+            bgRight = canvas.width.toFloat() - smallPadding
+        }
+
+        // Calculate available width for title and determine number of lines
+        var taskIconWidth = 0
+        if (event.isTask) {
+            taskIconWidth = eventTitleHeight + smallPadding
+        }
+        val titleAvailableWidth = bgRight - bgLeft - leftPadding - smallPadding - taskIconWidth
+        val titleLineCount = calculateTitleLineCount(event.title, titleAvailableWidth - smallPadding * 2)
+
+        // event background rectangle - adjust height based on line count
+        val backgroundY = yPos + verticalOffset
+        val eventHeight = eventTitleHeight * titleLineCount
+        val bgTop = backgroundY + smallPadding - eventHeight
+        val bgBottom = backgroundY + smallPadding * 2
+
+        // Handle event wrapping to next week
+        if (bgRight >= canvas.width.toFloat() - smallPadding && event.daysCnt > 1) {
             bgRight = canvas.width.toFloat() - smallPadding
             val newStartDayIndex = (event.startDayIndex / 7 + 1) * 7
             if (newStartDayIndex < 42) {
@@ -366,31 +386,52 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
         canvas.drawRoundRect(bgRectF, BG_CORNER_RADIUS, BG_CORNER_RADIUS, getEventBackgroundColor(event))
 
         // Draw left border with event color
-        val borderWidth = LEFT_BORDER_WIDTH * resources.displayMetrics.density
         val borderRectF = RectF(bgLeft, bgTop, bgLeft + borderWidth, bgBottom)
         canvas.drawRoundRect(borderRectF, BG_CORNER_RADIUS, BG_CORNER_RADIUS, getEventBorderColor(event))
 
         val specificEventTitlePaint = getEventTitlePaint(event)
-        var taskIconWidth = 0
-        val leftPadding = borderWidth + smallPadding
         if (event.isTask) {
             val taskIcon = resources.getColoredDrawableWithColor(R.drawable.ic_task_vector, specificEventTitlePaint.color).mutate()
-            val taskIconY = yPos.toInt() + verticalOffset - eventTitleHeight + smallPadding * 2
+            val taskIconY = yPos.toInt() + verticalOffset - eventHeight + smallPadding * 2
             taskIcon.setBounds(xPos.toInt() + leftPadding.toInt() + smallPadding, taskIconY, xPos.toInt() + leftPadding.toInt() + eventTitleHeight + smallPadding, taskIconY + eventTitleHeight)
             taskIcon.draw(canvas)
-            taskIconWidth += eventTitleHeight + smallPadding
         }
 
-        drawEventTitle(event, canvas, xPos + leftPadding + taskIconWidth, yPos + verticalOffset, bgRight - bgLeft - leftPadding - smallPadding - taskIconWidth, specificEventTitlePaint)
+        drawEventTitle(event, canvas, xPos + leftPadding + taskIconWidth, yPos + verticalOffset, titleAvailableWidth, specificEventTitlePaint)
 
         for (i in 0 until min(event.daysCnt, 7 - event.startDayIndex % 7)) {
-            dayVerticalOffsets.put(event.startDayIndex + i, verticalOffset + eventTitleHeight + smallPadding * 2)
+            dayVerticalOffsets.put(event.startDayIndex + i, verticalOffset + eventHeight + smallPadding * 2)
         }
     }
 
+    private fun calculateTitleLineCount(title: String, availableWidth: Float): Int {
+        if (availableWidth <= 0) return 1
+
+        val layout = StaticLayout.Builder.obtain(title, 0, title.length, eventTitlePaint, availableWidth.toInt())
+            .setAlignment(Layout.Alignment.ALIGN_NORMAL)
+            .setLineSpacing(0f, 1f)
+            .setIncludePad(false)
+            .setMaxLines(2)
+            .build()
+
+        return minOf(layout.lineCount, 2)
+    }
+
     private fun drawEventTitle(event: MonthViewEvent, canvas: Canvas, x: Float, y: Float, availableWidth: Float, paint: Paint) {
-        val ellipsized = TextUtils.ellipsize(event.title, eventTitlePaint, availableWidth - smallPadding, TextUtils.TruncateAt.END)
-        canvas.drawText(event.title, 0, ellipsized.length, x + smallPadding * 2, y, paint)
+        if (availableWidth <= 0) return
+
+        val layout = StaticLayout.Builder.obtain(event.title, 0, event.title.length, paint as TextPaint, availableWidth.toInt())
+            .setAlignment(Layout.Alignment.ALIGN_NORMAL)
+            .setLineSpacing(0f, 1f)
+            .setIncludePad(false)
+            .setMaxLines(2)
+            .setEllipsize(TextUtils.TruncateAt.END)
+            .build()
+
+        canvas.save()
+        canvas.translate(x + smallPadding * 2, y - eventTitleHeight)
+        layout.draw(canvas)
+        canvas.restore()
     }
 
     private fun getTextPaint(startDay: DayMonthly): Paint {
