@@ -297,8 +297,7 @@ class MainActivity : SimpleActivity(), RefreshRecyclerViewListener {
             goToTodayButton = findItem(R.id.go_to_today)
             findItem(R.id.print).isVisible = false
             findItem(R.id.filter).isVisible = mShouldFilterBeVisible
-            findItem(R.id.go_to_today).isVisible = shouldGoToTodayBeVisible && !binding.mainMenu.isSearchOpen
-            findItem(R.id.go_to_date).isVisible = config.storedView != EVENTS_LIST_VIEW
+            findItem(R.id.go_to_today).isVisible = !binding.mainMenu.isSearchOpen
             findItem(R.id.refresh_caldav_calendars).isVisible = config.caldavSync
             findItem(R.id.more_apps_from_us).isVisible = false
         }
@@ -320,8 +319,13 @@ class MainActivity : SimpleActivity(), RefreshRecyclerViewListener {
 
             when (menuItem.itemId) {
                 R.id.change_view -> showViewDialog()
-                R.id.go_to_today -> goToToday()
-                R.id.go_to_date -> showGoToDateDialog()
+                R.id.go_to_today -> {
+                    if (shouldGoToTodayBeVisible) {
+                        goToToday()
+                    } else {
+                        showGoToDateDialog()
+                    }
+                }
                 R.id.print -> printView()
                 R.id.filter -> showFilterDialog()
                 R.id.refresh_caldav_calendars -> refreshCalDAVCalendars(true)
