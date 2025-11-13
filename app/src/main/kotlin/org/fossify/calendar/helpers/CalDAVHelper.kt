@@ -316,6 +316,10 @@ class CalDAVHelper(val context: Context) {
                         val storedEventId = context.eventsDB.getEventIdWithImportId(importId)
                         if (storedEventId != null) {
                             event.id = storedEventId
+                            val existingEvent = context.eventsDB.getEventWithImportId(importId)
+                            if (existingEvent != null) {
+                                event.emoji = existingEvent.emoji
+                            }
                         }
                         event.parentId = parentEvent.id!!
                         eventsHelper.insertEvent(
@@ -365,6 +369,7 @@ class CalDAVHelper(val context: Context) {
             if (importIdsMap.containsKey(event.importId)) {
                 val existingEvent = importIdsMap[importId]
                 val originalEventId = existingEvent!!.id
+                val existingEmoji = existingEvent.emoji
 
                 existingEvent.apply {
                     this.id = null
@@ -374,6 +379,7 @@ class CalDAVHelper(val context: Context) {
 
                 if (existingEvent.hashCode() != event.hashCode() && title.isNotEmpty()) {
                     event.id = originalEventId
+                    event.emoji = existingEmoji
                     eventsHelper.updateEvent(
                         event = event,
                         updateAtCalDAV = false,
