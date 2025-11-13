@@ -397,7 +397,7 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
             taskIcon.draw(canvas)
         }
 
-        drawEventTitle(event, canvas, xPos + leftPadding + taskIconWidth, yPos + verticalOffset, titleAvailableWidth, specificEventTitlePaint)
+        drawEventTitle(event, canvas, xPos + leftPadding + taskIconWidth, yPos + verticalOffset, titleAvailableWidth, specificEventTitlePaint, titleLineCount)
 
         for (i in 0 until min(event.daysCnt, 7 - event.startDayIndex % 7)) {
             dayVerticalOffsets.put(event.startDayIndex + i, verticalOffset + eventHeight + smallPadding * 2)
@@ -417,7 +417,7 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
         return minOf(layout.lineCount, 2)
     }
 
-    private fun drawEventTitle(event: MonthViewEvent, canvas: Canvas, x: Float, y: Float, availableWidth: Float, paint: TextPaint) {
+    private fun drawEventTitle(event: MonthViewEvent, canvas: Canvas, x: Float, y: Float, availableWidth: Float, paint: TextPaint, lineCount: Int) {
         if (availableWidth <= 0) return
 
         val layout = StaticLayout.Builder.obtain(event.title, 0, event.title.length, paint, availableWidth.toInt())
@@ -428,8 +428,10 @@ class MonthView(context: Context, attrs: AttributeSet, defStyle: Int) : View(con
             .setEllipsize(TextUtils.TruncateAt.END)
             .build()
 
+        // Position text at the top of the event box with proper padding
+        val eventHeight = eventTitleHeight * lineCount
         canvas.save()
-        canvas.translate(x + smallPadding * 2, y - eventTitleHeight)
+        canvas.translate(x + smallPadding * 2, y + smallPadding * 2 - eventHeight)
         layout.draw(canvas)
         canvas.restore()
     }
