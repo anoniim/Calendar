@@ -2507,7 +2507,8 @@ class EventActivity : SimpleActivity() {
             eventStatusImage,
             eventAccessLevelImage,
             eventAvailabilityImage,
-            eventColorImage
+            eventColorImage,
+            eventEmojiImage
         ).forEach {
             it.applyColorFilter(textColor)
         }
