@@ -652,8 +652,7 @@
                 android:layout_alignBottom="@+id/event_caldav_calendar_holder"
                 android:layout_marginStart="@dimen/normal_margin"
                 android:padding="@dimen/medium_margin"
-                android:src="@drawable/ic_calendar_vector"
-                android:visibility="gone" />
+                android:src="@drawable/ic_calendar_vector" />
 
             <RelativeLayout
                 android:id="@+id/event_caldav_calendar_holder"
@@ -661,8 +660,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/event_attendees_divider"
                 android:layout_toEndOf="@+id/event_caldav_calendar_image"
-                android:background="?attr/selectableItemBackground"
-                android:visibility="gone">
+                android:background="?attr/selectableItemBackground">
 
                 <org.fossify.commons.views.MyTextView
                     android:id="@+id/event_caldav_calendar_name"
@@ -698,8 +696,7 @@
                 android:layout_height="@dimen/divider_height"
                 android:layout_below="@+id/event_caldav_calendar_holder"
                 android:background="@color/divider_grey"
-                android:importantForAccessibility="no"
-                android:visibility="gone" />
+                android:importantForAccessibility="no" />
 
             <ImageView
                 android:id="@+id/event_type_image"
@@ -710,7 +707,8 @@
                 android:layout_alignBottom="@+id/event_type_holder"
                 android:layout_marginStart="@dimen/normal_margin"
                 android:padding="@dimen/medium_margin"
-                android:src="@drawable/ic_category_outline_vector" />
+                android:src="@drawable/ic_category_outline_vector"
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:id="@+id/event_type_holder"
@@ -720,7 +718,8 @@
                 android:layout_marginTop="@dimen/medium_margin"
                 android:layout_marginBottom="@dimen/medium_margin"
                 android:layout_toEndOf="@+id/event_type_image"
-                android:background="?attr/selectableItemBackground">
+                android:background="?attr/selectableItemBackground"
+                android:visibility="gone">
 
                 <org.fossify.commons.views.MyTextView
                     android:id="@+id/event_type"
