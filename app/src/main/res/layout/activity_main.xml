@@ -27,7 +27,7 @@
                 android:id="@+id/swipe_refresh_layout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintBottom_toTopOf="@+id/quick_event_type_filter"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <FrameLayout
@@ -96,7 +96,7 @@
                 android:contentDescription="@string/new_event"
                 android:src="@drawable/ic_plus_vector"
                 app:backgroundTint="@color/color_primary"
-                app:layout_constraintBottom_toTopOf="@+id/quick_event_type_filter"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:rippleColor="@color/pressed_item_foreground" />
 
@@ -107,6 +107,7 @@
                 android:clipToPadding="false"
                 android:orientation="horizontal"
                 android:overScrollMode="never"
+                android:visibility="gone"
                 app:layoutManager="org.fossify.commons.views.MyLinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
